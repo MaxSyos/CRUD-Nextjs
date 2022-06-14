@@ -8,7 +8,7 @@ export default function Home() {
     new Client('Torus',     34, 1),
     new Client('Ana',       14, 2),
     new Client('Paulo',     24, 3),
-    new Client('Cornelius', 44, 4)
+    new Client('Cornelius', 44, 4),
   ]
 
 
