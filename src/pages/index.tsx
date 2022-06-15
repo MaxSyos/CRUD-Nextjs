@@ -1,6 +1,6 @@
 import Layout from '../components/Layout'
 import Table from '../components/Table'
-import Client from '../core/client'
+import Client from '../core/Client'
 
 export default function Home() {
 
