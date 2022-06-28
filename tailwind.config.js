@@ -5,9 +5,14 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   safelist: [
-    /^bg-/,
-    /^to-/,
+    {
+      pattern: /bg-('green' | 'blue' | 'gray')-(100|200|300|400|500|600|700)/,
+      variants: ['lg', 'hover', 'focus'],
+    },
     /^from-/,
+    /^to-/,
+    /^bg-/,
+
   ],
   theme: {
     extend: {},
