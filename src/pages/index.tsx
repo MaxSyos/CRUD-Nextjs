@@ -3,30 +3,47 @@ import Layout from '../components/Layout'
 import Table from '../components/Tabela'
 import Cliente from '../core/Cliente'
 import Formulario from '../components/Formulario'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import ClienteRepositorio from '../core/ClienteRepositorio'
+import ColecaoCliente from '../Backend/db/ColecaoCliente'
 
 export default function Home() {
 
-  const clientes = [
-    new Cliente('Torus',     34, 1),
-    new Cliente('Ana',       14, 2),
-    new Cliente('Paulo',     24, 3),
-    new Cliente('Cornelius', 44, 4),
-  ]
+  const repo : ClienteRepositorio = new ColecaoCliente()
+
+  const [cliente, setCliente] = useState<Cliente>(Cliente.vazio())
+  const [clientes, setClientes] = useState<Cliente>([])
+  const [visivel, setVisivel] = useState<'tabela' | 'form'> ('tabela')
+
+  useEffect(obterTodos, [])
+
+  function obterTodos(){
+    repo.obterTodos().then(clientes =>{
+      setClientes(clientes)
+      setVisivel('tabela')
+    })
+  }
 
   function clienteSelecionado(cliente: Cliente){
-    console.log(cliente.nome)
+    setCliente(cliente)
+    setVisivel('form')
   }
 
   function clienteExcluido(cliente: Cliente){
     console.log(cliente.nome)
   }
 
-  function salvarCliente(cliente: Cliente){
-    console.log(cliente)
+  function novoCliente(cliente: Cliente){
+    setCliente(Cliente.vazio())
+    setVisivel('form')
   }
 
-  const [visivel, setVisivel] = useState<'tabela' | 'form'> ('tabela')
+  async function salvarCliente(cliente: Cliente){
+    await repo.salvar(cliente)
+    obterTodos()
+  }
+
+  
 
   return (
     <div className={`flex justify-center items-center h-screen 
@@ -35,10 +52,9 @@ export default function Home() {
           {visivel === 'tabela' ? ( 
             <>
               <div className=" flex justify-end">
-                <Botao 
-                  cor='blue' 
-                  className={`mb-4`}
-                  onClick={() => setVisivel('form')}>
+                <Botao  
+                  className={`mb-4 bg-gradient-to-r from-blue-700 to-blue-500`}
+                  onClick={novoCliente}>
                     Novo Cliente
                 </Botao>
               </div>
@@ -49,7 +65,7 @@ export default function Home() {
             </>
           ) : ( 
             <Formulario 
-              cliente={clientes[0]} 
+              cliente={cliente} 
               clienteMudou={salvarCliente}
               cancelado={() => setVisivel('tabela')}
             /> 
