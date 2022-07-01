@@ -5,7 +5,7 @@ module.exports = {
   ],
   safeList: [
     {
-      pattern: /from-(green|blue|gray)-400/,
+      pattern: /from-(green|blue|gray)-(100|200|300|400)/,
     },
     {
       pattern: /to-(green|blue|gray)-700/,
